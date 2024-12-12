@@ -5,7 +5,7 @@ namespace WeatherApp.Contollers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WindDateConteoller : ControllerBase
+    public class WindDateController : ControllerBase
     {
     }
 }
