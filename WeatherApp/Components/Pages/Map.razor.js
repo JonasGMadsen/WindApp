@@ -16,5 +16,22 @@
 
         marker = L.marker(e.latlng).addTo(map);
     });
+
+    const response = await fetch('/api/WindData');
+    const jsonData = await response.json();
+
+    var velocityLayer = L.velocityLayer({
+        displayValues: true,
+        displayOptions: {
+            velocityType: 'Global Wind',
+            position: 'bottomleft',
+            emptyString: 'No wind data'
+        },
+        data: jsonData, // Pass the data array directly
+        maxVelocity: 20,   // adjust as needed
+        velocityScale: 0.01, // tweak to control vector size
+    });
+
+    velocityLayer.addTo(map);
 }
 
