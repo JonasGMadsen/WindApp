@@ -1,3 +1,19 @@
 ﻿#map {
     height: 800px;
 }
+
+.leaflet-control-velocity .velocity-info {
+    font-size: 16px; /* Adjust as needed */
+    padding: 5px 10px;
+}
+
+/* You can also style the type and values separately */
+.leaflet-control-velocity .velocity-type {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.leaflet-control-velocity .velocity-values {
+    font-size: 16px;
+    color: #f00; /* Change text color */
+}
