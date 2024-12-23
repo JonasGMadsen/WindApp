@@ -4,18 +4,8 @@ namespace WeatherApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class WindDataController : ControllerBase
+    public class WindDataController(IConfiguration config, IHttpClientFactory httpClientFactory) : ControllerBase
     {
-
-        private readonly IConfiguration _config;
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public WindDataController(IConfiguration config, IHttpClientFactory httpClientFactory)
-        {
-            _config = config;
-            _httpClientFactory = httpClientFactory;
-        }
-
         [HttpGet]
         [Route("local")]
         public async Task<IActionResult> GetWindData()
@@ -36,13 +26,13 @@ namespace WeatherApp.Controllers
         [Route("remote")]
         public async Task<IActionResult> GetRemoteWindData()
         {
-            var compressedFileUrl = _config["AzureSettings:CompressedWindDataUrl"];
+            var compressedFileUrl = config["AzureSettings:CompressedWindDataUrl"];
             if (string.IsNullOrEmpty(compressedFileUrl))
             {
                 return BadRequest("Azure compressed file URL not configured.");
             }
 
-            var client = _httpClientFactory.CreateClient();
+            var client = httpClientFactory.CreateClient();
             var response = await client.GetAsync(compressedFileUrl, HttpCompletionOption.ResponseHeadersRead);
 
             if (!response.IsSuccessStatusCode)
