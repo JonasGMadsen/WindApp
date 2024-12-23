@@ -27,7 +27,7 @@
         console.error("Error fetching local data:", e);
     }
 
-    // fetch the remote Brotli-compressed file & decompress, if no local data is found
+    // fetch the remote Brotli-compressed file & call the decompress, if no local data is found
     if (!jsonData) {
         const remoteResponse = await fetch('/api/WindData/remote');
         if (!remoteResponse.ok) {
