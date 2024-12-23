@@ -20,7 +20,7 @@ namespace WeatherApp.Controllers
         [Route("local")]
         public async Task<IActionResult> GetWindData()
         {
-            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "data", "winddata.json"); //Change the path to the location of the winddata.json file
+            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "data", "winddata.json"); //change the path to the location of the winddata.json file. Or change to match the file name and location in project.
 
             if (!System.IO.File.Exists(jsonFilePath))
             {
