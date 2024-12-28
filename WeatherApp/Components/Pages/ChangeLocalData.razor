@@ -15,33 +15,47 @@
                 </label>
             </div>
             <p class="text-center fs-5">
-                <span class="@GetStatusClass()">@statusMessage</span>
+                <span class="@GetStatusClass()">@_statusMessage</span>
             </p>
         </div>
     </div>
 </div>
 
 @code {
-    private string statusMessage = string.Empty;
+    private string _statusMessage = string.Empty;
 
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        if (file == null)
+
+        if (file.ContentType != "application/json" && !file.Name.EndsWith(".json", StringComparison.OrdinalIgnoreCase)) //keeping this check just in case, even tho it was bad alone
         {
-            statusMessage = "No file selected.";
+            _statusMessage = "Error. Invalid file type. Please upload a valid JSON file.";
             StateHasChanged();
             return;
         }
 
         var filePath = Path.Combine(WebHostEnvironment.WebRootPath, "data", "winddata.json");
+
         try
         {
             await using var stream = file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024); // 50 MB file limit. Files should at most be around 10-30 MB, this is just in case
-            await using var fileStream = new FileStream(filePath, FileMode.Create);
-            await stream.CopyToAsync(fileStream);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
 
-            statusMessage = "Wind data file updated successfully.";
+            if (!IsValidJson(memoryStream))
+            {
+                _statusMessage = "Error. The file content is not valid JSON.";
+                StateHasChanged();
+                return;
+            }
+
+            memoryStream.Position = 0;
+            await using var fileStream = new FileStream(filePath, FileMode.Create);
+            await memoryStream.CopyToAsync(fileStream);
+
+            _statusMessage = "Wind data file updated successfully.";
             StateHasChanged();
 
             await Task.Delay(3000); // a small delay for user feedback
@@ -49,16 +63,31 @@
         }
         catch (Exception ex)
         {
-            statusMessage = $"Error updating file: {ex.Message}";
+            _statusMessage = $"Error updating file: {ex.Message}";
             StateHasChanged();
+        }
+    }
+
+    private static bool IsValidJson(Stream stream)
+    {
+        try
+        {
+            using var reader = new StreamReader(stream, leaveOpen: true);
+            var content = reader.ReadToEnd();
+            System.Text.Json.JsonDocument.Parse(content);
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 
     private string GetStatusClass()
     {
-        if (statusMessage.Contains("successfully"))
+        if (_statusMessage.Contains("successfully"))
             return "text-success fw-bold";
-        if (statusMessage.Contains("Error"))
+        if (_statusMessage.Contains("Error"))
             return "text-danger fw-bold";
         return "text-secondary";
     }
