@@ -72,6 +72,8 @@ async function decompressBrotliResponse(response) {
         BrotliStreamResultCode
     } = await brotliModule.default;
 
+
+
     const decompressStream = new DecompressStream();
 
     return new Promise(async (resolve, reject) => {
@@ -124,9 +126,13 @@ async function decompressBrotliResponse(response) {
         });
 
         try {
+            //readable stream
             await response.body
+                //transform stream
                 .pipeThrough(decompressionStream)
+                //transform stream
                 .pipeThrough(textDecoderStream)
+                //writable stream
                 .pipeTo(outputStream);
         } catch (err) {
             reject(err);
