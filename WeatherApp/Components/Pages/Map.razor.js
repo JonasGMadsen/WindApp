@@ -57,7 +57,7 @@
         },
         data: jsonData, // pass the data array directly
         maxVelocity: 20,   // control max veclocity
-        velocityScale: 0.05, // tweak to control vector size
+        velocityScale: 0.04, // tweak to control vector size
     });
 
     velocityLayer.addTo(map);
