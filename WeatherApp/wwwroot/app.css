@@ -1,5 +1,42 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.page {
+    display: flex;
+    flex-flow: row;
+    height: 100vh; 
+}
+
+.sidebar {
+    width: 200px;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+article.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .sidebar, .top-row {
+        display: none !important;
+    }
+
+    .page {
+        flex-direction: column;
+    }
 }
 
 a, .btn-link {
