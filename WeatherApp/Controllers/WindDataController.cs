@@ -2,6 +2,7 @@
 
 namespace WeatherApp.Controllers
 {
+    //Can easily be expanded with more HttpGet methods.
     [ApiController]
     [Route("api/[controller]")]
     public class WindDataController(IConfiguration config, IHttpClientFactory httpClientFactory) : ControllerBase
