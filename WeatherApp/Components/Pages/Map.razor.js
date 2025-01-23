@@ -47,6 +47,7 @@
             marker = L.marker(e.latlng).addTo(map);
         }
     });
+
     //The velocityLayer will always refresh when the map is moved or zoomed. This is an inherent feature of Leaflet-Velocity
     var velocityLayer = L.velocityLayer({
         displayValues: true,
