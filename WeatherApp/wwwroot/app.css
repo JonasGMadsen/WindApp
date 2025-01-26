@@ -89,4 +89,17 @@ h1:focus {
 
 .leaflet-control-velocity {
     font-size: 20px !important;
+    line-height: 1.4;
+    white-space: normal;
+    max-width: 320px;
+}
+
+@media (max-width: 768px) {
+    .leaflet-control-velocity {
+        font-size: 10px !important;
+        line-height: 1.2;
+        max-width: 160px; 
+        white-space: normal;
+        word-wrap: break-word;
+    }
 }
