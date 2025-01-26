@@ -50,7 +50,7 @@
                 StateHasChanged();
                 return;
             }
-
+            //TODO: Make sure the user doesn't navigate away from the page while the file is being written. Maybe a loading spinner?
             memoryStream.Position = 0;
             await using var fileStream = new FileStream(filePath, FileMode.Create);
             await memoryStream.CopyToAsync(fileStream);
@@ -58,7 +58,7 @@
             _statusMessage = "Wind data file updated successfully.";
             StateHasChanged();
 
-            await Task.Delay(3000); // a small delay for user feedback
+            await Task.Delay(2500); // a small delay for user feedback
             NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)
